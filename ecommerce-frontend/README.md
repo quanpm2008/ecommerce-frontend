@@ -1,4 +1,4 @@
-﻿# Ecommerce Frontend
+# Ecommerce Frontend
 
 Frontend thương mại điện tử sử dụng React, TypeScript, Vite và Tailwind CSS.
 React Router quản lý điều hướng; TanStack Query cung cấp provider cho các truy vấn API sau này.
@@ -14,7 +14,21 @@ npm run dev
 ```
 
 Trên PowerShell, dùng `Copy-Item .env.example .env`. Nếu PowerShell chặn npm.ps1, dùng `npm.cmd` thay cho `npm`.
-Mở địa chỉ Vite in trong terminal (mặc định http://localhost:5173).
+Mở http://localhost:3000. Cổng 3000 trùng với bản Docker, để liên kết đặt lại mật khẩu
+trong email (`identity.password-reset.link-base`) mở đúng ứng dụng.
+
+### Chạy cùng backend
+
+Gateway chưa có route, nên khi dev Vite chuyển tiếp thẳng `/api/v1/identity` sang
+identity-service (`http://localhost:8083`, đổi bằng biến môi trường `IDENTITY_URL`), xem `vite.config.ts`.
+Chạy identity-service theo `ecommerce/identity-service/RUN.md`, ví dụ kèm một tài khoản quản trị cho dev:
+
+```sh
+cd ../../ecommerce/identity-service
+IDENTITY_BOOTSTRAP_ADMIN_EMAIL=admin@san.test IDENTITY_BOOTSTRAP_ADMIN_PASSWORD=Admin1234 docker compose up -d
+```
+
+UI preview (không cần backend): http://localhost:3000/preview.html (mục I), `#customer` (mục II).
 
 ```sh
 npm run lint
@@ -94,19 +108,27 @@ Các thư mục chưa có mã nguồn chứa `.gitkeep` để Git lưu lại c�
 Tailwind được tích hợp qua `@tailwindcss/vite` và `@import 'tailwindcss'` trong `src/index.css`.
 Giữ các file cấu hình TypeScript, ESLint và `index.html` cần thiết của Vite.
 
-## Các trang khung
+## Đường dẫn
 
-| Đường dẫn | Trang | Layout |
+| Đường dẫn | Trang | Ghi chú |
 | --- | --- | --- |
-| `/` | Trang chủ khách hàng | MainLayout |
-| `/seller` | Tổng quan người bán | SellerLayout |
-| `/admin` | Tổng quan quản trị | AdminLayout |
-| `/login` | Trang khung đăng nhập | Độc lập |
-| Đường dẫn khác | 404 | Độc lập |
+| `/` | Trang chủ khách hàng (khung tạm) | MainLayout |
+| `/login`, `/register` | I.3, I.1 | Đã nối API |
+| `/forgot-password`, `/reset-password?token=` | I.6, I.7 | Đã nối API; link trong email trỏ vào đây |
+| `/seller` | Tổng quan người bán (khung tạm) | Cần tài khoản người bán đã duyệt |
+| `/seller/login`, `/seller/register` | I.4, I.2 | Đã nối API |
+| `/admin` | Tổng quan quản trị (khung tạm) | Cần vai trò ADMIN |
+| `/admin/login` | I.5 | Đã nối API |
+| Đường dẫn khác | 404 | |
 
-Đây là bộ khung dự án: chưa triển khai đăng nhập, phân quyền, dữ liệu sản phẩm hay kết nối API.
-Các đường dẫn seller/admin hiện mở để kiểm tra layout; cần bổ sung kiểm tra quyền khi triển khai xác thực.
-`VITE_API_BASE_URL` trong `.env.example` chuẩn bị cho API client tương lai, hiện chưa được sử dụng.
+Khi dev, ba ứng dụng (khách, người bán, quản trị) chung một bản build và tách theo tiền tố đường dẫn.
+Đăng nhập luôn thành công với mọi tài khoản; frontend quyết định ai được vào kênh nào theo hồ sơ trả về
+(`src/features/auth/integration.ts`). Backend vẫn kiểm tra quyền ở mọi API.
+
+- `src/services/api/client.ts`: gọi API, đọc envelope `{ data }` / `{ error }`, tự làm mới token.
+- `src/services/session.ts`: phiên đăng nhập (lưu localStorage — cân nhắc cookie httpOnly trước khi lên production).
+- `src/types/`: type khớp DTO trong `ecommerce/docs/api.docx`.
+
 Biến `VITE_*` được nhúng vào frontend khi build, chỉ dùng cho cấu hình công khai.
 
 ## Docker
