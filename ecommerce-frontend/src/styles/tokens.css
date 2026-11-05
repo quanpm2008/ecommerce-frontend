@@ -1,0 +1,104 @@
+/*
+ * Design tokens from Figma "[UET] Cloud Project — UI Design" › 0. Design system.
+ * Theme "Tĩnh lặng": moss green (accent) is the only accent colour;
+ * warn/danger only appear when something is wrong.
+ */
+@theme {
+  --font-sans: 'Be Vietnam Pro', ui-sans-serif, system-ui, sans-serif;
+
+  /* Background & surfaces */
+  --color-bg: #fafaf7;
+  --color-surface: #ffffff;
+  --color-soft: #f2f1ec;
+  --color-soft-2: #eceae3;
+  --color-line: #e6e4dc;
+  --color-line-strong: #d5d2c8;
+
+  /* Text */
+  --color-text: #1e1e1b;
+  --color-text-2: #5c5b56;
+  --color-text-3: #8e8c85;
+  --color-placeholder: #b7b4aa;
+
+  /* Accent */
+  --color-accent: #0f6e56;
+  --color-accent-dark: #0a5240;
+  --color-accent-soft: #e4f2ec;
+
+  /* Status */
+  --color-warn: #a8531b;
+  --color-warn-soft: #fbefe5;
+  --color-danger: #a3302d;
+  --color-danger-soft: #fbeceb;
+  --color-info: #2c4f8a;
+  --color-info-soft: #e8eef8;
+  --color-star: #c98a1e;
+
+  /* Typography scale (Calm/*) */
+  --text-display: 40px;
+  --text-display--line-height: 1.15;
+  --text-display--letter-spacing: -0.025em;
+  --text-display--font-weight: 600;
+  --text-h1: 28px;
+  --text-h1--line-height: 1.25;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h1--font-weight: 600;
+  --text-h2: 19px;
+  --text-h2--line-height: 1.35;
+  --text-h2--letter-spacing: -0.012em;
+  --text-h2--font-weight: 600;
+  --text-h3: 16px;
+  --text-h3--line-height: 1.4;
+  --text-h3--letter-spacing: -0.005em;
+  --text-h3--font-weight: 600;
+  /* Money: always bold black, never accent-coloured. */
+  --text-price-l: 34px;
+  --text-price-l--line-height: 1.2;
+  --text-price-l--letter-spacing: -0.025em;
+  --text-price-l--font-weight: 600;
+  --text-number: 26px;
+  --text-number--line-height: 1.2;
+  --text-number--letter-spacing: -0.015em;
+  --text-number--font-weight: 600;
+  --text-price: 15px;
+  --text-price--line-height: 1.4;
+  --text-price--letter-spacing: -0.005em;
+  --text-price--font-weight: 600;
+  --text-body: 14px;
+  --text-body--line-height: 1.55;
+  --text-small: 13px;
+  --text-small--line-height: 1.5;
+  --text-caption: 12px;
+  --text-caption--line-height: 1.45;
+
+  /* Radii */
+  --radius-field: 10px;
+  --radius-card: 14px;
+  /* Product images / thumbnails */
+  --radius-media: 16px;
+
+  /* Elevation (Figma drop shadows) */
+  --drop-shadow-card: 0 20px 24px rgb(31 31 26 / 0.1);
+  --drop-shadow-float: 0 6px 8px rgb(31 31 26 / 0.05);
+
+  /* Decorative floating cards on auth screens */
+  --animate-float: float var(--float-duration, 6s) ease-in-out infinite;
+
+  /* Drift up and sideways with a slight sway; each card sets its own
+     --float-duration / animation-delay so they never move in sync. */
+  @keyframes float {
+    0%,
+    100% {
+      translate: 0 0;
+      rotate: 0deg;
+    }
+    30% {
+      translate: 5px -14px;
+      rotate: 1.5deg;
+    }
+    65% {
+      translate: -4px -7px;
+      rotate: -1.2deg;
+    }
+  }
+}
